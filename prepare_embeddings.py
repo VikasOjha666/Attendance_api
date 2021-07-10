@@ -35,7 +35,7 @@ def get_embedding(model,face):
 def get_block_embeddings(path):
      embeddingsArr=[]
      for filename in os.listdir(path):
-         img=extract_face_roi_single(os.path.join(path,filename))
+         img=extract_face_roi_single(os.path.join(path,filename),graph,extractor)
          img=get_embedding(model,img)
          img=np.reshape(img,(-1,2))
          img=Normaliser.transform(img)
@@ -44,7 +44,7 @@ def get_block_embeddings(path):
      return embeddingsArr
 
 def get_single_embedding(rollno,img,filename):
-    img=extract_face_roi_single(img)
+    img=extract_face_roi_single(img,graph,extractor)
     img=get_embedding(model,img)
     img=np.reshape(img,(-1,2))
     img=Normaliser.transform(img)
@@ -60,6 +60,6 @@ image_path='StudentImages/'
 save_path='Embeddings/'
 
 def prepare_data():
-    embeddingArr=get_block_embeddings(image_path)
+    embeddingArr=get_block_embeddings(image_path,graph,extractor)
     with open(os.path.join(save_path,'Embeddings.pickle'),'wb') as f:
       pickle.dump((embeddingArr),f)
