@@ -9,12 +9,17 @@ os.environ['CUDA_VISIBLE_DEVICES']='-1'
 import tensorflow as tf
 Normaliser = Normalizer(norm='l2')
 from keras.models import load_model
+from mtcnn.mtcnn import MTCNN
 
-
-model=load_model('facenet_keras.h5')
-
+extractor=MTCNN()
+try:
+    extractor.detect_faces()
+except:
+    pass
+model = load_model('facenet_keras.h5')
 global graph
-graph = tf.compat.v1.get_default_graph()
+graph = tf.get_default_graph()
+
 
 
 def get_embedding(model,face):
